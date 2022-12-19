@@ -9,11 +9,17 @@ const Duration: FC<DurationProps> = ({ seconds }) => {
   const displayMinutes = Math.floor(seconds / 60) % 60;
   const displaySeconds = seconds % 60;
 
+  const strSeconds = displaySeconds.toString().padStart(2, '0');
+  const strMinutes = displayHours
+    ? displayMinutes.toString().padStart(2, '0')
+    : displayMinutes.toString();
+  const strHours = displayHours ? displayHours.toString() : null;
+
   return (
     <span style={{ display: 'inline-flex', gap: '0.2em' }}>
-      <span>{displayHours.toString().padStart(2, '0')}h</span>
-      <span>{displayMinutes.toString().padStart(2, '0')}m</span>
-      <span>{displaySeconds.toString().padStart(2, '0')}s</span>
+      {strHours && <span>{displayHours}h</span>}
+      <span>{strMinutes}m</span>
+      <span>{strSeconds}s</span>
     </span>
   );
 };
