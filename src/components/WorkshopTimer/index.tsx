@@ -25,7 +25,10 @@ const WorkshopTimer: FC<WorkshopTimerProps> = ({ spec }) => {
     0
   );
 
-  const { isRunning, start, stop, secondsRemaining } = useTimer(totalDuration);
+  const { isRunning, start, stop, secondsElapsed, secondsRemaining } =
+    useTimer(totalDuration);
+
+  let totalSectionTimes = 0;
 
   return (
     <div>
@@ -40,15 +43,40 @@ const WorkshopTimer: FC<WorkshopTimerProps> = ({ spec }) => {
       </h2>
       <ul>
         {spec.sections.map((section, index) => {
+          const startTime = totalSectionTimes;
+          const endTime = startTime + section.durationSeconds;
+
+          const remaining = endTime - secondsElapsed;
+          const isPast = secondsElapsed >= endTime;
+          const isCurrent =
+            secondsElapsed >= startTime && secondsElapsed < endTime;
+
+          // Increment before rendering next section
+          totalSectionTimes = endTime;
+
           return (
             <li
               key={index}
               style={{
                 margin: 0,
+                opacity: isPast ? 0.5 : 1.0,
               }}
             >
-              <h3 style={{ margin: 0 }}>{section.title}</h3>
-              <Duration seconds={section.durationSeconds} />
+              <h3 style={{ margin: 0 }}>
+                {section.title}
+                (<Duration seconds={section.durationSeconds} />)
+                <p>
+                  <Duration
+                    seconds={
+                      isPast
+                        ? 0
+                        : isCurrent
+                        ? remaining
+                        : section.durationSeconds
+                    }
+                  />
+                </p>
+              </h3>
             </li>
           );
         })}
