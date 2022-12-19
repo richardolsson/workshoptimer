@@ -1,4 +1,7 @@
+'use client';
+
 import { FC } from 'react';
+import useTimer from '../../useTimer';
 
 import Duration from '../Duration';
 
@@ -22,8 +25,16 @@ const WorkshopTimer: FC<WorkshopTimerProps> = ({ spec }) => {
     0
   );
 
+  const { isRunning, start, stop, secondsRemaining } = useTimer(totalDuration);
+
   return (
     <div>
+      <button onClick={() => (isRunning ? stop() : start())}>
+        {isRunning ? 'Stop' : 'Start'}
+      </button>
+      <h1>
+        <Duration seconds={secondsRemaining} />
+      </h1>
       <h2>
         {spec.title} (<Duration seconds={totalDuration} />)
       </h2>
