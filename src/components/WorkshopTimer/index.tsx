@@ -41,7 +41,12 @@ const WorkshopTimer: FC<WorkshopTimerProps> = ({ spec }) => {
       <h2>
         {spec.title} (<Duration seconds={totalDuration} />)
       </h2>
-      <ul>
+      <ul
+        style={{
+          margin: 0,
+          padding: 0,
+        }}
+      >
         {spec.sections.map((section, index) => {
           const startTime = totalSectionTimes;
           const endTime = startTime + section.durationSeconds;
@@ -58,25 +63,38 @@ const WorkshopTimer: FC<WorkshopTimerProps> = ({ spec }) => {
             <li
               key={index}
               style={{
+                listStyleType: 'none',
                 margin: 0,
                 opacity: isPast ? 0.5 : 1.0,
+                padding: 20,
+                position: 'relative',
               }}
             >
               <h3 style={{ margin: 0 }}>
-                {section.title}
-                (<Duration seconds={section.durationSeconds} />)
-                <p>
-                  <Duration
-                    seconds={
-                      isPast
-                        ? 0
-                        : isCurrent
-                        ? remaining
-                        : section.durationSeconds
-                    }
-                  />
-                </p>
+                {section.title} (<Duration seconds={section.durationSeconds} />)
               </h3>
+              <div>
+                <Duration
+                  seconds={
+                    isPast ? 0 : isCurrent ? remaining : section.durationSeconds
+                  }
+                />
+              </div>
+              <div
+                style={{
+                  backgroundColor: isCurrent ? 'red' : 'gray',
+                  bottom: 0,
+                  height: isCurrent
+                    ? Math.round(100 * (remaining / section.durationSeconds)) +
+                      '%'
+                    : isPast
+                    ? 0
+                    : '100%',
+                  left: 0,
+                  position: 'absolute',
+                  width: '5px',
+                }}
+              ></div>
             </li>
           );
         })}
