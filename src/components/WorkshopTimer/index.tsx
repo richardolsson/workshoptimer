@@ -90,6 +90,9 @@ const WorkshopTimer: FC<WorkshopTimerProps> = ({ spec }) => {
             <li
               key={index}
               style={{
+                background: isCurrent
+                  ? 'linear-gradient(90deg, #eee 0%, white 10%)'
+                  : 'white',
                 listStyleType: 'none',
                 margin: 0,
                 opacity: isPast ? 0.5 : 1.0,
