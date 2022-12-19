@@ -8,7 +8,7 @@ type UseTimerReturn = {
   isRunning: boolean;
   secondsElapsed: number;
   secondsRemaining: number;
-  start: () => void;
+  start: (startTime?: Date) => void;
   stop: () => void;
 };
 
@@ -25,6 +25,9 @@ export default function useTimer(
     if (startTime) {
       const interval = setInterval(() => {
         const now = new Date();
+        if (now < startTime) {
+          return;
+        }
         const msElapsed = (now.getTime() - startTime.getTime()) * timeScale;
         if (msElapsed > duration * 1000) {
           setElapsed(duration);
@@ -42,9 +45,9 @@ export default function useTimer(
     isRunning: !!startTime,
     secondsElapsed: Math.round(elapsed),
     secondsRemaining: duration - Math.round(elapsed),
-    start: () => {
+    start: (startTime = new Date()) => {
       setElapsed(0);
-      setStartTime(new Date());
+      setStartTime(startTime);
     },
     stop: () => setStartTime(null),
   };

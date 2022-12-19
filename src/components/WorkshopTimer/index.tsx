@@ -1,9 +1,11 @@
 'use client';
 
 import { FC } from 'react';
-import useTimer from '../../useTimer';
 
 import Duration from '../Duration';
+import parseTimeStr from '../../utils/parseTimeStr';
+import useLocalStorage from '../../hooks/useLocalStorage';
+import useTimer from '../../hooks/useTimer';
 
 type WorkshopSpecSection = {
   durationSeconds: number;
@@ -25,6 +27,11 @@ const WorkshopTimer: FC<WorkshopTimerProps> = ({ spec }) => {
     0
   );
 
+  const [rawStartTime, setRawStartTime] = useLocalStorage(
+    'workshopStartTime',
+    ''
+  );
+
   const { isRunning, start, stop, secondsElapsed, secondsRemaining } =
     useTimer(totalDuration);
 
@@ -32,7 +39,27 @@ const WorkshopTimer: FC<WorkshopTimerProps> = ({ spec }) => {
 
   return (
     <div>
-      <button onClick={() => (isRunning ? stop() : start())}>
+      <input
+        onChange={(ev) => setRawStartTime(ev.target.value)}
+        placeholder="Set start time"
+        value={rawStartTime}
+      />
+      <button
+        onClick={() => {
+          if (isRunning) {
+            stop();
+          } else {
+            const startTime = parseTimeStr(rawStartTime);
+            if (startTime) {
+              start(startTime);
+            } else {
+              const now = new Date();
+              setRawStartTime(now.toTimeString().slice(0, 8));
+              start(now);
+            }
+          }
+        }}
+      >
         {isRunning ? 'Stop' : 'Start'}
       </button>
       <h1>
