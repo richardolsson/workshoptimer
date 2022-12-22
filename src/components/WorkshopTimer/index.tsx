@@ -8,11 +8,13 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 import useTimer from '../../hooks/useTimer';
 
 type WorkshopSpecSection = {
+  bullets?: string[];
   durationSeconds: number;
+  notes?: string;
   title: string;
 };
 
-type WorkshopSpec = {
+export type WorkshopSpec = {
   sections: WorkshopSpecSection[];
   title: string;
 };
@@ -110,6 +112,14 @@ const WorkshopTimer: FC<WorkshopTimerProps> = ({ spec }) => {
                   }
                 />
               </div>
+              <p>{section.notes}</p>
+              {!!section.bullets?.length && (
+                <ul>
+                  {section.bullets.map((bullet, idx) => (
+                    <li key={idx}>{bullet}</li>
+                  ))}
+                </ul>
+              )}
               <div
                 style={{
                   backgroundColor: isCurrent ? 'red' : 'gray',
