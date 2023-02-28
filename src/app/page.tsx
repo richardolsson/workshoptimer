@@ -5,6 +5,21 @@ import { FC } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import WorkshopTimer, { WorkshopSpec } from '../components/WorkshopTimer';
 
+const PRODUCT_FIELD_ASPECTS = [
+  'Goals',
+  'Drivers',
+  'Enablers',
+  'Production',
+  'Distribution',
+  'Customers',
+  'Users',
+  'Motivations',
+  'Problem',
+  'Solution',
+  'Alternatives',
+  'Uniqueness',
+];
+
 const SPECS: WorkshopSpec[] = [
   {
     sections: [
@@ -177,6 +192,48 @@ const SPECS: WorkshopSpec[] = [
       },
     ],
     title: 'High-level feature definition',
+  },
+  {
+    sections: [
+      {
+        durationSeconds: 3 * 60,
+        title: 'Introduction',
+      },
+      {
+        durationSeconds: 8 * 60,
+        title: 'The Frame',
+      },
+      ...PRODUCT_FIELD_ASPECTS.flatMap((name, index) => {
+        const aspect = [
+          {
+            durationSeconds: 1.5 * 60,
+            title: `${name.toUpperCase()}: Intro`,
+          },
+          {
+            durationSeconds: 3 * 60,
+            title: `${name.toUpperCase()}: Brainstorm`,
+          },
+          {
+            durationSeconds: 5 * 60,
+            title: `${name.toUpperCase()}: Sharing`,
+          },
+        ];
+
+        if (index == 5) {
+          aspect.push({
+            durationSeconds: 15 * 60,
+            title: 'BREAK',
+          });
+        }
+
+        return aspect;
+      }),
+      {
+        durationSeconds: 10 * 60,
+        title: 'Summarizing discussion',
+      },
+    ],
+    title: '2,5 hr Product Field',
   },
 ];
 
