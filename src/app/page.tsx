@@ -235,6 +235,37 @@ const SPECS: WorkshopSpec[] = [
     ],
     title: '2,5 hr Product Field',
   },
+  {
+    sections: [
+      {
+        durationSeconds: 5 * 60,
+        title: 'Intro',
+      },
+      {
+        durationSeconds: 40 * 60,
+        title: 'Roleplay',
+      },
+      {
+        durationSeconds: 10 * 60,
+        title: 'Break',
+      },
+      {
+        durationSeconds: 20 * 60,
+        title: 'Roleplay',
+      },
+      {
+        bullets: [
+          'Who had the best acting skills?',
+          'Was it hard not to break character?',
+          'Facilitators, can you sum up in 3 minutes what you did?',
+          'Everyone, What were your key takeaways?',
+        ],
+        durationSeconds: 30 * 60,
+        title: 'Sharing & discussion',
+      },
+    ],
+    title: 'Campaign collaboration roleplay',
+  },
 ];
 
 const StartPage: FC = () => {
